@@ -1,7 +1,6 @@
 from django.contrib import admin
+from .models.models import Post
 
-# Register your models here.
-from .models import Post
 
 class PostModelAdmin(admin.ModelAdmin):
     list_display = ["title", "updated", "timestamp"]

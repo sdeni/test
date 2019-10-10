@@ -1,11 +1,9 @@
-from django.contrib.auth import get_user_model, authenticate, login, logout
-from django.db.models import Q
-from django.urls import reverse
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 
 from rest_framework import serializers
 
-from .models import Post
+from .models.models import Post
 
 User = get_user_model()
 

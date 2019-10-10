@@ -1,10 +1,7 @@
 from rest_framework import generics, permissions
-
-
-from .models import Post
+from .models.models import Post
 from .permissions import IsOwnerOrReadOnly
 from .serializers import PostSerializer
-
 
 
 class PostDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
