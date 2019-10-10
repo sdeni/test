@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+    django-service:
+        container_name: skill-django-container
+        build:
+            context: ../
+            dockerfile: docker/django/Dockerfile
+        env_file:
+        - .env
+        volumes:
+            - ../src:/code
+        links:
+            - db-service:skill-pg-db-container
+        depends_on:
+            - db-service
+        ports:
+            - "8083:8000"
+
+    db-service:
+        image: postgres
+        # user: "1000:1000"
+        env_file:
+            - .env
+        restart: 'no' #always
+        container_name: skill-pg-db-container
+        ports:
+            - '5432:5432'

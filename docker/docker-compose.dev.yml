@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+    django-service:
+        container_name: skill-django-container
+        ports:
+            - "8083:8000"
+
+    db-service:
+        container_name: skill-pg-db-container
+        ports:
+            - '5432:5432'

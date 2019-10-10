@@ -79,10 +79,10 @@ WSGI_APPLICATION = 'reactify.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'main',
+        'NAME': 'skill',
         'USER': 'skill',
-        'PASSWORD': 'skill',
-        'HOST': 'localhost',
+        'PASSWORD': 'skill42',
+        'HOST': 'db-service',
         'PORT': '',
     }
 }
