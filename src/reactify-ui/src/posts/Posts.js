@@ -2,18 +2,20 @@ import React, { Component } from 'react';
 import 'whatwg-fetch'
 import cookie from 'react-cookies'
 
+import PostCreate from './PostCreate'
 import PostInline from './PostInline'
 
 class Posts extends Component {
 
     constructor(props){
+        console.log(0);
         super(props);
-        this.togglePostListClass = this.togglePostListClass.bind(this)
+        this.togglePostListClass = this.togglePostListClass.bind(this);
 
     }
     state = {
         posts: [],
-        postsListClass: "card",
+        postsListClass: "",
     };
   loadPosts(){
       const endpoint = '/list/';
@@ -41,7 +43,7 @@ class Posts extends Component {
   createPost(){
       const endpoint = '/list/';
       const csrfToken = cookie.load('csrftoken');
-      let thisComp = this
+      let thisComp = this;
       let data = {
             "slug": "",
             "title": "",
@@ -74,8 +76,8 @@ class Posts extends Component {
   }
 
   togglePostListClass(event){
-      event.preventDefault()
-      let currentListClass = this.state.postsListClass
+      event.preventDefault();
+      let currentListClass = this.state.postsListClass;
       if (currentListClass === ""){
           this.setState({
               postsListClass: "card",
@@ -88,6 +90,10 @@ class Posts extends Component {
 
   }
 
+  toggleBuy(event){
+      console.log('aaa');
+  }
+
   componentDidMount(){
       this.setState({
           posts: [],
@@ -98,14 +104,21 @@ class Posts extends Component {
   render() {
       const {posts} = this.state;
       const {postsListClass} = this.state;
+      const csrfToken = cookie.load('csrftoken');
     return (
       <div>
+          <h1 onClick={this.toggleBuy}>Catalog</h1>
           <button onClick={this.togglePostListClass}>Toggle Class</button>
           {posts.length > 0 ? posts.map((postItem, index)=>{
               return (
                       <PostInline post={postItem} elClass={postsListClass} />
               )
           }) : <p>No Posts Found</p>}
+          {(csrfToken !== undefined && csrfToken !==null) ?
+              <div className='my-5'>
+                  <PostCreate />
+              </div>
+          : ""}
 
       </div>
     );

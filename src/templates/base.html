@@ -20,5 +20,21 @@
 
 
     {% include 'js.html' %}
+  <style>
+      .backdrop {
+          z-index: 200;
+          top: 0;
+          right: 0;
+          position: fixed;
+          width: 400px;
+          height: 100vh;
+          background-color: red;
+      }
+
+      .modal {
+        position: initial;
+        display: block;
+      }
+  </style>
   </body>
 </html>

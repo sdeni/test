@@ -21,7 +21,8 @@ class UserPublicSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     url             = serializers.HyperlinkedIdentityField(
-                            view_name='skill-api:detail',
+                            # view_name='skill-api:detail',
+                            view_name='detail',
                             lookup_field='slug'
                             )
     user            = UserPublicSerializer(read_only=True)

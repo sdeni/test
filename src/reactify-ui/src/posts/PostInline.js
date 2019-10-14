@@ -7,7 +7,7 @@ class PostInline extends Component {
       const showContent = elClass === 'card' ? 'd-block' : 'd-none';
     return (
       <div>
-          {post !== undefined ? <div className={elClass}>
+          {post !== undefined ? <div className={elClass} onClick={this.toggleBuy}>
               <h1>{post.title}</h1>
               <p className={showContent}>{post.content}</p>
               </div>

@@ -3,7 +3,18 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 
-class MyForm(UserCreationForm):
+class AuthForm(forms.ModelForm):
+
+    class Meta:
+        password = forms.CharField(widget=forms.PasswordInput)
+        model = User
+        widgets = {
+            'password': forms.PasswordInput(),
+        }
+        fields = ('email', 'password')
+
+
+class SignupForm(UserCreationForm):
     email = forms.EmailField(max_length=200, help_text='Required')
 
     class Meta:
@@ -11,8 +22,8 @@ class MyForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2')
 
 
-class AuthForm(forms.ModelForm):
+class NewPassForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'password')
+        fields = ('password1', 'password2')

@@ -5,7 +5,9 @@
   "dependencies": {
     "react": "^16.4.0",
     "react-cookies": "^0.1.1",
-    "react-dom": "^16.4.0"
+    "react-dom": "^16.4.0",
+    "react-router-dom": "^5.1.2",
+    "prop-types": "latest"
   },
   "devDependencies": {
     "react-scripts": "1.1.4",

@@ -34,12 +34,14 @@ help:
 	@echo "====================="
 	@echo "  app-build-start			Build and start docker containers"
 	@echo "  app-install-requirements   Install requirements from requirements.txt"
+	@echo "  app-npm-install			Run npm install as root inside django container"
 	@echo "  app-destroy				Destroy docker containers and related data"
 	@echo "  app-start                  Start docker containers"
 	@echo "  app-stop					Stop docker containers"
 	@echo "  app-restart				Stop and start"
 	@echo "  app-logs					Show application logs (not docker ones!)"
 	@echo "  app-cli					Run command inside django container. Usage: make app-cli param=\"help\"."
+	@echo "  app-migrate				Apply django migrations."
 	@echo "  app-shell					Ssh to django container"
 	@echo "  app-shell-root				Ssh to django container as root"
 	@echo "  app-test			        Run app tests. To add arguments you can use ARGS, e.g. make ARGS='--tags problem' app-functionaltest"
@@ -60,7 +62,7 @@ help:
 #####################
 ### APP commands
 #####################
-app-build-start: docker-build-start app-install-requirements
+app-build-start: app-pre-copy-configs docker-build-start app-install-requirements app-npm-install
 
 
 app-destroy: docker-destroy
@@ -69,7 +71,7 @@ app-destroy: docker-destroy
 app-rebuild-start: app-destroy app-build-start
 
 
-app-start: docker-start
+app-start: docker-start app-migrate
 
 
 app-stop: docker-stop
@@ -86,9 +88,16 @@ app-install-requirements:
 	@echo "Installing requirements ..."
 	@docker-compose ${DOCKER_COMPOSE_FILES} exec -u root -T ${DJANGO_SERVICE} pip install -r requirements.txt
 
+# app-pre-copy-configs:
+# 	@cp requirements.txt docker/django/
+# 	@cp src/reactify-ui/package.json docker/django/
+
 app-cli:
 	@docker-compose ${DOCKER_COMPOSE_FILES} exec -u $(USER_UID) -T ${DJANGO_SERVICE} $(param)
 
+app-migrate:
+	@echo "Applying migrations ..."
+	@docker-compose ${DOCKER_COMPOSE_FILES} exec -u root -T ${DJANGO_SERVICE} python manage.py migrate
 
 app-test:
 
@@ -98,6 +107,9 @@ app-shell:
 
 app-shell-root:
 	@docker-compose ${DOCKER_COMPOSE_FILES} exec -u root ${DJANGO_SERVICE} bash
+
+app-npm-install:
+	@docker-compose ${DOCKER_COMPOSE_FILES} exec -w /code/reactify-ui -u root -T ${DJANGO_SERVICE} npm install
 
 
 #####################

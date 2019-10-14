@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Log in</h1>
+<form method="POST">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="save btn btn-default">Save</button>
+</form>
+<a href="/forgot">Forgot</a>
+
+<a class="btn btn-primary"  href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
+<a class="btn btn-primary" href="{% url 'social:begin' 'google-oauth2' %}">Google</a>
+{% endblock %}

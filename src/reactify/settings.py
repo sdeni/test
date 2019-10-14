@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'social_django',
     'corsheaders',
     'rest_framework',
 
@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware'
 ]
 
 ROOT_URLCONF = 'reactify.urls'
@@ -66,6 +67,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -83,9 +86,16 @@ DATABASES = {
         'USER': 'skill',
         'PASSWORD': 'skill42',
         'HOST': 'db-service',
-        'PORT': '',
+        'PORT': '5432',
     }
 }
+
+AUTHENTICATION_BACKENDS = [
+    'skill.backends.EmailAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -140,3 +150,27 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     )
 }
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_URL = 'logout'
+LOGOUT_REDIRECT_URL = 'login'
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_FACEBOOK_KEY = 1750382241941952
+SOCIAL_AUTH_FACEBOOK_SECRET = '240d6974d5865e2882ad63b58821d257'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY  = '734517807385-vlcp0dqr4ohhknok4c0ujsvs27f0hutl.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '3aMuFDfuVJqj1ee9raKzzH6k'
+
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'anton.shevchenko@skill.im'
+EMAIL_HOST_PASSWORD = 'stoP78Stop'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# fix for prod
+SESSION_COOKIE_SECURE = False

@@ -24,6 +24,10 @@ COPY ./requirements.txt /code/
 
 RUN pip install -r requirements.txt
 
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN apt-get install -y nodejs
+
 RUN chown -R django /code
 USER django
+
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
