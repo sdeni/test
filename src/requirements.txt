@@ -1,6 +1,7 @@
 Django==2.2.6
 django-cors-headers==2.2.0
 djangorestframework==3.8.2
+django-dotenv=1.4.2
 pytz==2018.4
 psycopg2==2.8.3
 yandex_checkout
