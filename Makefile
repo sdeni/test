@@ -32,29 +32,30 @@ help:
 	@echo ""
 	@echo "Application commands:"
 	@echo "====================="
-	@echo "  app-build-start			Build and start docker containers"
+	@echo "  app-build-start            Build and start docker containers"
 	@echo "  app-install-requirements   Install requirements from requirements.txt"
-	@echo "  app-npm-install			Run npm install as root inside django container"
-	@echo "  app-destroy				Destroy docker containers and related data"
+	@echo "  app-npm-install            Run npm install as root inside django container"
+	@echo "  app-destroy                Destroy docker containers and related data"
 	@echo "  app-start                  Start docker containers"
-	@echo "  app-stop					Stop docker containers"
-	@echo "  app-restart				Stop and start"
-	@echo "  app-logs					Show application logs (not docker ones!)"
-	@echo "  app-cli					Run command inside django container. Usage: make app-cli param=\"help\"."
-	@echo "  app-migrate				Apply django migrations."
-	@echo "  app-shell					Ssh to django container"
-	@echo "  app-shell-root				Ssh to django container as root"
-	@echo "  app-test			        Run app tests. To add arguments you can use ARGS, e.g. make ARGS='--tags problem' app-functionaltest"
+	@echo "  app-stop                   Stop docker containers"
+	@echo "  app-restart                Stop and start"
+	@echo "  app-logs                   Show application logs (not docker ones!)"
+	@echo "  app-cli                    Run command inside django container. Usage: make app-cli param=\"help\"."
+	@echo "  app-migrate                Apply django migrations."
+	@echo "  app-manage                 Exec django manage command. E.g. make app-manage param=createsuperuser"
+	@echo "  app-shell                  Ssh to django container"
+	@echo "  app-shell-root             Ssh to django container as root"
+	@echo "  app-test                   Run app tests. To add arguments you can use ARGS, e.g. make ARGS='--tags problem' app-functionaltest"
 	@echo ""
 	@echo ""
 	@echo "Docker commands:"
 	@echo "====================="
-	@echo "  docker-status				Show running status of the docker containers."
-	@echo "  docker-logs				Show logs of the docker containers."
-	@echo "  docker-container-logs		Show logs of the docker given container: make docker-container-logs container=\"docker-container-name\""
-	@echo "  docker-cli					Execute a bash command on the given container: make docker-cli container=\"docker-container-name\" command=\"ls -la\""
-	@echo "  docker-cli-root			Execute a bash command as root on the given container: make docker-cli container=\"docker-container-name\" command=\"ls -la\""
-	@echo "  docker-config				Show docker container config"
+	@echo "  docker-status              Show running status of the docker containers."
+	@echo "  docker-logs                Show logs of the docker containers."
+	@echo "  docker-container-logs      Show logs of the docker given container: make docker-container-logs container=\"docker-container-name\""
+	@echo "  docker-cli                 Execute a bash command on the given container: make docker-cli container=\"docker-container-name\" command=\"ls -la\""
+	@echo "  docker-cli-root            Execute a bash command as root on the given container: make docker-cli container=\"docker-container-name\" command=\"ls -la\""
+	@echo "  docker-config              Show docker container config"
 	@echo ""
 	@echo ""
 
@@ -62,7 +63,7 @@ help:
 #####################
 ### APP commands
 #####################
-app-build-start: app-pre-copy-configs docker-build-start app-install-requirements app-npm-install
+app-build-start: docker-build-start app-install-requirements app-migrate app-npm-install
 
 
 app-destroy: docker-destroy
@@ -109,8 +110,11 @@ app-shell-root:
 	@docker-compose ${DOCKER_COMPOSE_FILES} exec -u root ${DJANGO_SERVICE} bash
 
 app-npm-install:
+	@echo "Installing node modules ..."
 	@docker-compose ${DOCKER_COMPOSE_FILES} exec -w /code/reactify-ui -u root -T ${DJANGO_SERVICE} npm install
 
+app-manage:
+	@docker-compose ${DOCKER_COMPOSE_FILES} exec  -u $(USER_UID) ${DJANGO_SERVICE} python manage.py $(param)
 
 #####################
 ### DOCKER
